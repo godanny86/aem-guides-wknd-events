@@ -1,96 +1,297 @@
-# Chapter 3
+# Chapter 3 - Navigation and Routing
 
-## Proxy AEM
-
-1. Add the following to `package.json`
+# List Component
 
 ```
-"proxy": {
-    "/content": {
-      "target": "http://localhost:4502",
-      "auth": "admin:admin"
+"list": {
+"dateFormatString": "yyyy-MM-dd",
+"items": [
+            {
+            "url": "/content/wknd/en/sport/la-skateparks.html",
+            "path": "/content/wknd/en/sport/la-skateparks",
+            "title": "Ultimate guide to LA skateparks.",
+            "description": null,
+            "lastModified": 1523300221730
+            },
+            {
+            "url": "/content/wknd/en/sport/five-gyms-la.html",
+            "path": "/content/wknd/en/sport/five-gyms-la",
+            "title": "Flow with the Go. 5 Gyms in LA.",
+            "description": null,
+            "lastModified": 1519755202858
+            }
+        ],
+"showDescription": false,
+"showModificationDate": true,
+"linkItems": true,
+":type": "wknd/components/content/list"
+}
+```
+
+1. In `react-app` create List Component
+2. First iteration:
+
+```
+
+import React, {Component} from 'react';
+import {MapTo} from '@adobe/cq-react-editable-components';
+
+
+const ListEditConfig = {
+
+    emptyLabel: 'List',
+
+    isEmpty: function() {
+        return !this.props || !this.props.items || this.props.items.length < 1;
     }
-  }
+};
+
+/**
+ * ListItem renders the individual items in the list
+ */
+class ListItem extends Component {
+
+    render() {
+
+        if(!this.props.path || !this.props.title || !this.props.url) {
+            return null;
+        }
+
+        return (
+            <li className="ListItem" key={this.props.path}>
+                <a className="ListItem-link" href={this.props.url}>{this.props.title}</a> 
+            </li>
+        );
+
+    }
+}
+
+class List extends Component {
+    render() {
+        return (
+                <nav className="List">
+                    <ul className="List-wrapper">
+                        { this.props.items && this.props.items.map((listItem, index) => {
+                            return <ListItem path={listItem.path} url={listItem.url} title={listItem.title} />
+                            })
+                       }
+                    </ul>
+                </nav>
+        );
+    }
+}
+
+export default MapTo("wknd-events/components/content/list")(List, ListEditConfig);
 ```
 
-2. create a file .env.development
+
+# Install React Router
+
+1. 
 
 ```
-REACT_APP_PAGE_MODEL_PATH=/content/wknd-events/react.model.json
+npm install --save react-router
 ```
 
-3. Update `src/index.js`
+2. 
+
+```
+npm install --save react-router-dom
+```
+
+3. Update index.js
 
 ```
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { ModelManager, ModelClient, Constants } from '@adobe/cq-spa-page-model-manager';
-import './index.css';
+import './index.scss';
 import App from './App';
 import "./components/MappedComponents";
+import {BrowserRouter} from 'react-router-dom';
 
 function render(model) {
     ReactDOM.render((
-        <App cqChildren={ model[Constants.CHILDREN_PROP] } cqItems={ model[Constants.ITEMS_PROP] } cqItemsOrder={ model[Constants.ITEMS_ORDER_PROP] }
-            cqPath={ ModelManager.rootPath } locationPathname={ window.location.pathname }/>), document.getElementById('root'));
+        <BrowserRouter>
+            <App cqChildren={ model[Constants.CHILDREN_PROP] } cqItems={ model[Constants.ITEMS_PROP] } cqItemsOrder={ model[Constants.ITEMS_ORDER_PROP] }
+                 cqPath={ ModelManager.rootPath } locationPathname={ window.location.pathname }/>
+        </BrowserRouter>), document.getElementById('root'));
 }
 
 ModelManager.initialize({ path: process.env.REACT_APP_PAGE_MODEL_PATH }).then(render);
 ```
 
-## Update to use SASS (move to part 2?)
-
-1. Install SASS
+4. Add Utils for RouteHelper
 
 ```
-$ npm install node-sass --save
+import React, {Component} from 'react';
+ import {Route} from 'react-router-dom';
+ 
+ /**
+  * Helper that facilitate the use of the {@link Route} component
+  */
+ 
+ /**
+  * Returns a composite component where a {@link Route} component wraps the provided component
+  *
+  * @param {React.Component} WrappedComponent    - React component to be wrapped
+  * @param {string} [extension=html]             - extension used to identify a route amongst the tree of resource URLs
+  * @returns {CompositeRoute}
+  */
+ export const withRoute = (WrappedComponent, extension) => {
+     return class CompositeRoute extends Component {
+         render() {
+             let routePath = this.props.cqPath;
+             if (!routePath) {
+                 return <WrappedComponent {...this.props}/>;
+             }
+ 
+             extension = extension || 'html';
+ 
+             // Context path + route path + extension
+             return <Route key={ routePath } path={ '(.*)' + routePath + '.' + extension } render={ (routeProps) => {
+                 return <WrappedComponent {...this.props} {...routeProps}/>;
+             } } />
+         }
+     }
+ };
 ```
 
-2. 
+5. Update Page.js
+
+```
+/*
+    Page.js
+
+    - WKND specific implementation of Page
+    - Maps to wknd-events/components/structure/page
+*/
+
+import {Page, MapTo, withComponentMappingContext } from "@adobe/cq-react-editable-components";
+import {withRoute} from '../../utils/RouteHelper';
+require('./Page.scss');
+
+ // This component is a variant of a React Page component mapped to the "structure/page" resource type
+ // For now, the rendering is the same as the RootPage; this is more for illustration purposes
+ class WkndPage extends Page {
+ 
+     get containerProps() {
+         let attrs = super.containerProps;
+         attrs.className = (attrs.className || '') + ' WkndPage ' + (this.props.cssClassNames || '');
+         return attrs
+     }
+ }
+ 
+MapTo('wknd-events/components/structure/page')(withComponentMappingContext(withRoute(WkndPage)));
+```
+
+6. Update App.js
+
+```
+import React from 'react';
+import { Page, withModel, EditorContext, Utils } from '@adobe/cq-react-editable-components';
+import { Redirect } from 'react-router';
+import Header from './components/header/Header';
+import './App.scss';
+
+ /**
+  * Returns a model path from the given URL
 
 
-## Header Component
+import { ModelManager, Constants } from "@adobe/cq-spa-page-model-manager";
 
-## Global Styles (SASS, Header)
+/**
+ * Returns a model path from the given URL
+ * @param {string} url     - Path from which to extract a model path
+ * @return {string|undefined}
+ */
+function getModelPath(url) {
+    if (!url) {
+        return;
+    }
 
-## Responsive Grid
+    let dotIndex = url.indexOf(".");
+    return url.substr(0, dotIndex > -1 ? dotIndex : url.length);
+}
 
-1. Create responsive grid Client library
-2. update `clientlib.config.js` to include responsive grid
-3. update `public/index.html` for dev purposes
+/**
+ * Should the App redirect to the home page
+ *
+ * @param {string} modelUrl     - Path of the current model
+ * @return {boolean}
+ */
+function canRedirectHome(modelUrl, pathname) {
+    if (!pathname) {
+        return false;
+    }
+    const currentUrl = getModelPath(pathname);
+    // 1. if a model url has been provided
+    // 2. if the current URL is located under the content
+    // 3. if app root model path equals the current URL
+    return modelUrl && modelUrl.indexOf('/content/') > -1 && (modelUrl === currentUrl || modelUrl.endsWith(currentUrl));
+}
 
-## Install Storybook (optional)
+// This component is the application entry point
+class App extends Page {
 
-## Update Image Component 
+    get redirect() {
+        const modelRootPath = this.props.cqPath;
+        const locationPathname = this.props.locationPathname;
 
-1. In AEM add a title to Image -> view nothing happens
-2. View json output to see that title property is available
-3. Return to the react-app -> update Image.js to include caption
-4. Update SCSS
-5. Test outside of AEM
+        if (canRedirectHome(modelRootPath, locationPathname)) {
+            // Redirect to the home url
+            return <Redirect to={ modelRootPath + '/home.html' }/>;
+        }
+    }
 
-* Primary goal of this chapter is to create the Article Template
-* Introduction of Layout Container and iterative concepts
-* Integration of Responsive grid styles
-* FED mock JSON → how to? how responsive styles are part of JSON
-* Basic article page
+    render() {
+        return (
+            <div className="App">
+                <Header />
+                <EditorContext.Provider value={ Utils.isInEditor() }>
+                    { this.redirect }
+                    { this.childComponents }
+                    { this.childPages }
+                </EditorContext.Provider>
+            </div>
+          );
+    }
+}
 
-1. Introduction of Layout Container / Responsive grid
-2. Add Root + responsivegrid at Template
-3. Update App.js to extend Container
-4. Include page.js ?
-5. Include SASS preprocessor to Webpack project
-6. include WKND base variables/styles
-7. Implement Title Component
-8. Implement Image Component
+export default withModel(App);
+```
 
-Concepts to cover:
-* Updating Template with available components
-* Mocking JSON
-    * I did this iteratively
-        1. Implement basic JS so the component will render (no styles)
-        2. Deploy to AEM
-        3. Author several components (mess with width, variations of content)
-        4. Copy the JSON to mock.json in the React project
-        5. Develop locally against static JSON
-        6. modify static JSON until lots of use cases are covered
+## Update List Component
+
+```
+
+```
+
+## Update Header Component
+
+## Add Font Awesome
+
+* instructions: https://fontawesome.com/how-to-use/on-the-web/using-with/react
+
+```
+$ npm i --save @fortawesome/fontawesome-svg-core \
+  npm i --save @fortawesome/free-solid-svg-icons \
+  npm i --save @fortawesome/react-fontawesome
+
+```
+
+Create a file named Icon.js
+
+```
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faCheckSquare, faChevronLeft, faSearch, faHeadphonesAlt, faMusic, faCamera, faFutbol, faPaintBrush, faTheaterMasks} from '@fortawesome/free-solid-svg-icons';
+
+library.add(faCheckSquare, faChevronLeft, faSearch, faHeadphonesAlt, faMusic, faCamera, faFutbol, faPaintBrush, faTheaterMasks);
+
+```
+
+update app.js to import Icon.js
+
+Update Header.js to include chevron
+
+# Navigation

@@ -1,10 +1,92 @@
-# Chapter 1 - App Page Setup
+# Chapter 1 - First Editable Components
 
-In this chapter we will setup the AEM project to include the SPA on an AEM page by updating a base page component to include the compiled SPA as a client library. We will also inspect the Sling Model Exporter used to expose the content of an AEM page as JSON.  This JSON model will ultimately drive the SPA.
+In this chapter we will install the AEM SPA Editor JS SDK as part of the `react-app` module. We will then update the React application to Two React components will be creatated that will map to AEM Text and Image components. We will also inspect the Sling Model Exporter used to expose the content of an AEM page as JSON.  This JSON model will ultimately drive the SPA.
+
+> **Persona:** Front End Developer
+
+## Install AEM SPA Editor JS SDK
+
+We will now install the AEM SPA Editor JS SDK as part of the `react-app` project.
+
+1. **Open a new terminal window and navigate into the `react-app` directory**
+
+    ```
+    $ cd <src>/aem-guides-wknd-events/react
+    ```
+
+2. **Install [@adobe/cq-spa-component-mapping](https://www.npmjs.com/package/@adobe/cq-spa-component-mapping)**
+
+    ```
+    $ npm install @adobe/cq-spa-component-mapping
+    ```
+
+    The [@adobe/cq-spa-component-mapping](https://www.npmjs.com/package/@adobe/cq-spa-component-mapping) provides helpers to map AEM Components to SPA components. This module is not tied to a specific SPA framework.
+
+3. **Install [@adobe/cq-spa-page-model-manager](https://www.npmjs.com/package/@adobe/cq-spa-page-model-manager)**
+
+    ```
+    $ npm install @adobe/cq-spa-page-model-manager
+    ```
+
+    The [@adobe/cq-spa-page-model-manager](https://www.npmjs.com/package/@adobe/cq-spa-page-model-manager) provides the API to manage the model representation of the AEM Pages that are used to compose a SPA. This module is not tied to a specific SPA framework.
+
+4. **Install [@adobe/cq-react-editable-components](https://www.npmjs.com/package/@adobe/cq-react-editable-components)**
+
+    ```
+    $ npm install @adobe/cq-react-editable-components
+    ```
+
+    The [@adobe/cq-react-editable-components](https://www.npmjs.com/package/@adobe/cq-react-editable-components) provides generic React helpers and components to support AEM authoring. This module also wraps the `cq-spa-page-model-manager` and `cq-spa-component-mapping` to make these available to the React framework.
+
+5. **Install peer dependencies**
+
+    Several peer dependencies must be manually installed to the project:
+
+    ```
+    $ npm install ajv --save-dev
+    $ npm install clone --save-dev
+    ```
+
+6. `react-app/package.json` should now look something like this:
+
+    *Note, versions of dependencies may be slightly different depending on when you are starting this tutorial*
+
+    ```
+    {
+        "name": "react-app",
+        "version": "0.1.0",
+        "private": true,
+        "dependencies": {
+            "@adobe/cq-react-editable-components": "^1.0.0-rc.2",
+            "@adobe/cq-spa-component-mapping": "^1.0.0-rc.3",
+            "@adobe/cq-spa-page-model-manager": "^1.0.0-rc.3",
+            "react": "^16.5.2",
+            "react-dom": "^16.5.2",
+            "react-scripts": "1.1.5"
+        },
+        "scripts": {
+            "start": "react-scripts start",
+            "build": "react-scripts build && clientlib --verbose",
+            "test": "react-scripts test --env=jsdom",
+            "eject": "react-scripts eject"
+        },
+        "devDependencies": {
+            "aem-clientlib-generator": "^1.4.1",
+            "ajv": "^6.5.4",
+            "clone": "^2.1.2"
+        }
+    }
+    ```
+
+## Integrate AEM SPA Editor JS SDK (index.js, Page.js, App.js)
+
+## Text Component
+
+## Image Component
+
+## (Bonus) Understanding the HierarchyPage Sling Model
 
 > **Persona:** AEM Backend Developer
-
-## Understanding the HierarchyPage Sling Model
 
 The AEM SPA JS SDK is designed to parse a JSON schema into a JavaScript Model.  A Sling Model, `HierarchyPage.java` has been included in the starter project that will expose content within AEM as JSON that matches the expected schema. A key feature of the exported JSON by the `HierarchyPageImpl` is the ability to expose the content of multiple AEM pages in a single request. This allows the SPA to be initialized with most of the content of the app and can remove the need for subsequent requests as a user navigates the app.
 
@@ -96,87 +178,7 @@ In the editor of your choice open the `<src>/aem-guides-wknd-events/core` module
     }
     ```
 
-## Integrate the React app on the Page
-
-Next we will integrate the React app on to the page via the client library.
-
-Open up the `ui.apps` project to edit.
-
-1. **Beneath `/apps/wknd-events/components/structure/page` open the file `customheaderlibs.html`.**
-
-    This HTL template will get loaded in the HTML `<head>` section.
-    
-    Replace the contents of the file with the following:
-
-    ```
-    <!--/*
-    Custom Headerlibs for React Site
-    */-->
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta property="cq:datatype" data-sly-test="${wcmmode.edit || wcmmode.preview}" content="JSON"/>
-    <meta property="cq:wcmmode" data-sly-test="${wcmmode.edit}" content="edit"/>
-    <meta property="cq:wcmmode" data-sly-test="${wcmmode.preview}" content="preview"/>
-    <meta property="cq:pagemodel_root_url" 
-        data-sly-use.page="com.adobe.aem.guides.wkndevents.core.models.HierarchyPage" 
-        content="${page.rootUrl}"/>
-    <sly data-sly-use.clientlib="/libs/granite/sightly/templates/clientlib.html">
-    <sly data-sly-call="${clientlib.css @ categories='wknd-events.react'}"/>
-    ```
-
-    This will load the CSS for the `wknd-events.react` client library at the top of the page. This will also set a meta property for `cq:pagemodel_root_url`. This will be used by the AEM SPA Editor SDK to identify the root page JSON to load.
-
-2. **Beneath `/apps/wknd-events/components/structure/page` open the file `customfooterlibs.html`.**
-
-    This HTL template will get loaded at the bottom of the page right before the closing `</body>` tag.
-
-    Replace the contents of the file with the following:
-
-    ```
-    <!--/*
-    Custom footer React libs
-    */-->
-    <sly data-sly-use.clientLib="${'/libs/granite/sightly/templates/clientlib.html'}"></sly>
-    <sly data-sly-test="${wcmmode.edit || wcmmode.preview}"
-        data-sly-call="${clientLib.js @ categories='cq.authoring.pagemodel.messaging'}"></sly>
-    <sly data-sly-call="${clientLib.js @ categories='wknd-events.react'}"></sly>
-    ```
-
-    This will load the JS for the `wknd-events.react` client library at the bottom of the page. The code above also incluces the `cq.authoring.pagemodel.messaging` when the page is being edited in the AEM environment. This client library allows for the SPA editing capabilities using the AEM Sites Editor.
-
-3. **Create a new file named `body.html` beneath `/apps/wknd-events/components/structure/page`**
-
-    Populate `body.html` with the following:
-
-    ```
-    <!--/*
-    - body.html
-    - includes div that will be targeted by SPA
-    */-->
-    <div id="root"></div>
-    ```
-
-    This will insert the DOM element that the React application is targeting. You can see in the code `/aem-guides-wknd-events/react-app/src/index.js`:
-
-    ```
-    ReactDOM.render(<App />, document.getElementById('root'));
-    ```
-
-4. **Deploy the changes to AEM**
-
-    Deploy the changes by running the following maven command:
-
-    ```
-    $ cd aem-guides-wknd-events
-    $ mvn -PautoInstallPackage clean install
-    ```
-
-5. **Navigate to http://localhost:4502/editor.html/content/wknd-events/react.html**
-
-    You should now see the React application being rendered on the AEM page.
-
-    ![react in aem](./images/react-in-aem.png)
-
 
 ## Next: [Chapter 2](../chapter-2/chapter-2.md)
 
-In the next chapter we will configure an AEM page and template to include a client library containing the React app.
+In the next chapter we will perform some FED tasks

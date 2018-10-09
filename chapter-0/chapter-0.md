@@ -466,6 +466,86 @@ Next, configure the `react-app` project to also be a Maven module. This way it c
 
     ![React App as a CLientlibrary](./images/react-app-clientlib.png)
 
+## Integrate the React app on the Page
+
+Next we will integrate the React app on to the page via the client library.
+
+Open up the `ui.apps` project to edit.
+
+1. **Beneath `/apps/wknd-events/components/structure/page` open the file `customheaderlibs.html`.**
+
+    This HTL template will get loaded in the HTML `<head>` section.
+    
+    Replace the contents of the file with the following:
+
+    ```
+    <!--/*
+    Custom Headerlibs for React Site
+    */-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta property="cq:datatype" data-sly-test="${wcmmode.edit || wcmmode.preview}" content="JSON"/>
+    <meta property="cq:wcmmode" data-sly-test="${wcmmode.edit}" content="edit"/>
+    <meta property="cq:wcmmode" data-sly-test="${wcmmode.preview}" content="preview"/>
+    <meta property="cq:pagemodel_root_url" 
+        data-sly-use.page="com.adobe.aem.guides.wkndevents.core.models.HierarchyPage" 
+        content="${page.rootUrl}"/>
+    <sly data-sly-use.clientlib="/libs/granite/sightly/templates/clientlib.html">
+    <sly data-sly-call="${clientlib.css @ categories='wknd-events.react'}"/>
+    ```
+
+    This will load the CSS for the `wknd-events.react` client library at the top of the page. This will also set a meta property for `cq:pagemodel_root_url`. This will be used by the AEM SPA Editor SDK to identify the root page JSON to load.
+
+2. **Beneath `/apps/wknd-events/components/structure/page` open the file `customfooterlibs.html`.**
+
+    This HTL template will get loaded at the bottom of the page right before the closing `</body>` tag.
+
+    Replace the contents of the file with the following:
+
+    ```
+    <!--/*
+    Custom footer React libs
+    */-->
+    <sly data-sly-use.clientLib="${'/libs/granite/sightly/templates/clientlib.html'}"></sly>
+    <sly data-sly-test="${wcmmode.edit || wcmmode.preview}"
+        data-sly-call="${clientLib.js @ categories='cq.authoring.pagemodel.messaging'}"></sly>
+    <sly data-sly-call="${clientLib.js @ categories='wknd-events.react'}"></sly>
+    ```
+
+    This will load the JS for the `wknd-events.react` client library at the bottom of the page. The code above also incluces the `cq.authoring.pagemodel.messaging` when the page is being edited in the AEM environment. This client library allows for the SPA editing capabilities using the AEM Sites Editor.
+
+3. **Create a new file named `body.html` beneath `/apps/wknd-events/components/structure/page`**
+
+    Populate `body.html` with the following:
+
+    ```
+    <!--/*
+    - body.html
+    - includes div that will be targeted by SPA
+    */-->
+    <div id="root"></div>
+    ```
+
+    This will insert the DOM element that the React application is targeting. You can see in the code `/aem-guides-wknd-events/react-app/src/index.js`:
+
+    ```
+    ReactDOM.render(<App />, document.getElementById('root'));
+    ```
+
+4. **Deploy the changes to AEM**
+
+    Deploy the changes by running the following maven command:
+
+    ```
+    $ cd aem-guides-wknd-events
+    $ mvn -PautoInstallPackage clean install
+    ```
+
+5. **Navigate to http://localhost:4502/editor.html/content/wknd-events/react.html**
+
+    You should now see the React application being rendered on the AEM page.
+
+    ![react in aem](./images/react-in-aem.png)
+
 ## Next: [Chapter 1](../chapter-1/chapter-1.md)
 
 In the next chapter we will configure an AEM page and template to include a client library containing the React app.

@@ -1,3 +1,3 @@
-# Chapter 5
+# Chapter 5 - Content Fragment Integration
 
-# Map Component
+## Create Content Fragment Model
