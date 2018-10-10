@@ -10,13 +10,13 @@ Next, we will install the AEM SPA Editor JS SDK as part of the `react-app` proje
 
 1. **Open a new terminal window and navigate into the `react-app` directory**
 
-    ```
+    ```bash
     $ cd <src>/aem-guides-wknd-events/react-app
     ```
 
 2. **Install [@adobe/cq-spa-component-mapping](https://www.npmjs.com/package/@adobe/cq-spa-component-mapping)**
 
-    ```
+    ```bash
     $ npm install @adobe/cq-spa-component-mapping
     ```
 
@@ -24,7 +24,7 @@ Next, we will install the AEM SPA Editor JS SDK as part of the `react-app` proje
 
 3. **Install [@adobe/cq-spa-page-model-manager](https://www.npmjs.com/package/@adobe/cq-spa-page-model-manager)**
 
-    ```
+    ```bash
     $ npm install @adobe/cq-spa-page-model-manager
     ```
 
@@ -32,7 +32,7 @@ Next, we will install the AEM SPA Editor JS SDK as part of the `react-app` proje
 
 4. **Install [@adobe/cq-react-editable-components](https://www.npmjs.com/package/@adobe/cq-react-editable-components)**
 
-    ```
+    ```bash
     $ npm install @adobe/cq-react-editable-components
     ```
 
@@ -42,7 +42,7 @@ Next, we will install the AEM SPA Editor JS SDK as part of the `react-app` proje
 
     Several peer dependencies must be manually installed to the project:
 
-    ```
+    ```bash
     $ npm install react-fast-compare
     $ npm install ajv --save-dev
     $ npm install clone --save-dev
@@ -227,7 +227,7 @@ Using the editor of your choice open `react-app` under `aem-guides-wknd-events/r
 
 8. From the root of the project `aem-guides-wknd-events` run the following command to build and deploy the updates to AEM:
 
-    ```
+    ```bash
     $ cd <src>/aem-guides-wknd-events
     $ mvn -PautoInstallPackage clean install
     ```
@@ -312,7 +312,7 @@ Using the editor of your choice open `react-app` under `aem-guides-wknd-events/r
 
 4. From the root of the project `aem-guides-wknd-events` run the following command to build and deploy the updates to AEM:
 
-    ```
+    ```bash
     $ cd <src>/aem-guides-wknd-events
     $ mvn -PautoInstallPackage clean install
     ```
@@ -415,7 +415,7 @@ Using the editor of your choice open `react-app` under `aem-guides-wknd-events/r
 
 4. From the root of the project `aem-guides-wknd-events` run the following command to build and deploy the updates to AEM:
 
-    ```
+    ```bash
     $ cd <src>/aem-guides-wknd-events
     $ mvn -PautoInstallPackage clean install
     ```

@@ -18,7 +18,7 @@ The following should be installed:
 
 Start by double checking that the above tools have been installed and available via the path. Open up a new terminal and run the following commands:
 
-```
+```bash
 $ java -version
 java version "1.8.0_111"
 Java(TM) SE Runtime Environment (build 1.8.0_111-b14)
@@ -44,7 +44,7 @@ Download: [Starter Project](../aem-guides-wknd-events-START.zip)
 
 You can also fork the [Git Repository](#) and start the tutorial from there:
     
-```
+```bash
 $ git clone git@github.com:Adobe-Marketing-Cloud/aem-guides-wknd-events.git
 $ cd aem-guides-wknd-events
 $ git checkout start
@@ -87,7 +87,7 @@ The following properties were used when generating the AEM project from [Archety
 
     From the command line, within the `aem-guides-wknd-events` directory run the following:
 
-    ```
+    ```bash
     $ mvn -PautoInstallPackage clean install
     ```
 
@@ -109,7 +109,7 @@ A starter React application has been created using the [create-react-app](https:
 
     Navigate to the `react-app` directory and run the following commands:
 
-    ```
+    ```bash
     $ cd <src-dir>/aem-guides-wknd-events/react-app
     $ npm install
     $ npm start
@@ -125,7 +125,7 @@ A starter React application has been created using the [create-react-app](https:
 
     Press `ctrl+c` to stop the server.
 
-    ```
+    ```bash
     ^C
     $ npm run build
     ```
@@ -171,13 +171,13 @@ The process illustrated above is as follows
 
 1. Install the **[aem-clientlibs-generator](https://www.npmjs.com/package/aem-clientlib-generator)** node plugin as part of the `react-app` project.
 
-    ```
+    ```bash
     $ cd <src>/aem-guides-wknd-events/react-app
     $ npm install aem-clientlib-generator --save-dev
     ```
 2. Notice that `package.json` has been updated with the dev dependencies for **aem-clientlib-generator**.
 
-    ```
+    ```json
     //package.json
     {
        ...
@@ -190,7 +190,7 @@ The process illustrated above is as follows
 
 3. Create a new file beneath the `aem-guides-wknd-events/react-app` folder named `clientlib.config.js`. Populate the file with the following:
 
-    ```
+    ```json
     module.exports = {
         // default working directory (can be changed per 'cwd' in every asset option)
         context: __dirname,
@@ -221,7 +221,7 @@ The process illustrated above is as follows
 
     **Old line - package.json**
 
-    ```
+    ```json
      "scripts": {
         "build": "react-scripts build",
     }
@@ -229,7 +229,7 @@ The process illustrated above is as follows
 
     **New line - package.json**
 
-    ```
+    ```json
      "scripts": {
         "build": "react-scripts build && clientlib --verbose",
     }
@@ -300,7 +300,7 @@ Next, configure the `react-app` project to also be a Maven module. This way it c
 
 1. Open up the parent reactor POM,`<src>/aem-guides-wknd-events/pom.xml`, and add the `react-app` as a module to build. The order in which the modules are built matters:
 
-    ```
+    ```xml
     ...
     <modules>
         <module>core</module>
@@ -315,7 +315,7 @@ Next, configure the `react-app` project to also be a Maven module. This way it c
 
     > Important, use the same version of **node** and **npm** that you have installed locally.
 
-    ```
+    ```xml
     ...
      <properties>
         <aem.host>localhost</aem.host>
@@ -342,7 +342,7 @@ Next, configure the `react-app` project to also be a Maven module. This way it c
 
 2. Create a new file named `pom.xml` beneath `<src>/aem-guides-wknd-events/react-app` folder. Populate the `pom.xml` with the following:
 
-    ```
+    ```xml
     <?xml version="1.0" encoding="UTF-8"?>
     <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
         <modelVersion>4.0.0</modelVersion>
@@ -471,7 +471,7 @@ Open up the `aem-guides-wknd-events/ui.apps` project to edit.
     
     Replace the contents of the file with the following:
 
-    ```
+    ```html
     <!--/*
     Custom Headerlibs for React Site
     */-->
@@ -494,7 +494,7 @@ Open up the `aem-guides-wknd-events/ui.apps` project to edit.
 
     Replace the contents of the file with the following:
 
-    ```
+    ```html
     <!--/*
     Custom footer React libs
     */-->
@@ -510,7 +510,7 @@ Open up the `aem-guides-wknd-events/ui.apps` project to edit.
 
     Populate `body.html` with the following:
 
-    ```
+    ```html
     <!--/*
     - body.html
     - includes div that will be targeted by SPA
