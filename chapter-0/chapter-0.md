@@ -45,7 +45,7 @@ Download: [Starter Project](../aem-guides-wknd-events-START.zip)
 You can also fork the [Git Repository](#) and start the tutorial from there:
     
 ```
-$ git clone git@git.corp.adobe.com:aem-technical-marketing/aem-guides-wknd-events.git
+$ git clone git@github.com:Adobe-Marketing-Cloud/aem-guides-wknd-events.git
 $ cd aem-guides-wknd-events
 $ git checkout start
 ```
@@ -85,7 +85,7 @@ The following properties were used when generating the AEM project from [Archety
 
 2. **Build and deploy the project to a local AEM instance**
 
-    From the command line, within the `aem-wknd-events` directory run the following:
+    From the command line, within the `aem-guides-wknd-events` directory run the following:
 
     ```
     $ mvn -PautoInstallPackage clean install
@@ -138,13 +138,12 @@ A starter React application has been created using the [create-react-app](https:
             /build
                 /static
                     /css
-                        main.<hash>.css
-                        main.<hash>.css.map
+                        main.<hash>.chunk.css
+                        main.<hash>.chunk.css.map
                     /js
-                        main.<hash>.js
-                        main.<hash>.js.map
-                    /media
-                        logo.<hash>.svg
+                        main.<hash>.chunk.js
+                        main.<hash>.chunk.js.map
+                        <hash>.chunk.js
     ```
 
     In the next section we will move these files into an AEM client library and deploy as part of the `ui.apps` module.
@@ -181,27 +180,15 @@ The process illustrated above is as follows
     ```
     //package.json
     {
-        "name": "react-app",
-        "version": "0.1.0",
-        "private": true,
-        "dependencies": {
-            "react": "^16.5.2",
-            "react-dom": "^16.5.2",
-            "react-scripts": "1.1.5"
-        },
-        "scripts": {
-            "start": "react-scripts start",
-            "build": "react-scripts build",
-            "test": "react-scripts test --env=jsdom",
-            "eject": "react-scripts eject"
-        },
+       ...
+
         "devDependencies": {
             "aem-clientlib-generator": "^1.4.1"
         }
     }
     ```
 
-3. Create a new file beneath the `/react-app` folder named `clientlib.config.js`. Populate the file with the following:
+3. Create a new file beneath the `aem-guides-wknd-events/react-app` folder named `clientlib.config.js`. Populate the file with the following:
 
     ```
     module.exports = {
@@ -283,18 +270,19 @@ The process illustrated above is as follows
     start aem-clientlib-generator
     working directory: ../src/aem-guides-wknd-events/react-app
 
-
     processing clientlib: react-app
     Write node configuration using serialization format: xml
     write clientlib json file: ../ui.apps/src/main/content/jcr_root/apps/wknd-events/clientlibs/react-app/.content.xml
 
     write clientlib asset txt file (type: js): ../ui.apps/src/main/content/jcr_root/apps/wknd-events/clientlibs/react-app/js.txt
-    copy: build/static/js/main.d1cb61c2.js ../ui.apps/src/main/content/jcr_root/apps/wknd-events/clientlibs/react-app/js/main.d1cb61c2.js
+    copy: build/static/js/1.7eae6140.chunk.js ../ui.apps/src/main/content/jcr_root/apps/wknd-events/clientlibs/react-app/js/1.7eae6140.chunk.js
+    copy: build/static/js/main.5dd257ec.chunk.js ../ui.apps/src/main/content/jcr_root/apps/wknd-events/clientlibs/react-app/js/main.5dd257ec.chunk.js
+    copy: build/static/js/runtime~main.229c360f.js ../ui.apps/src/main/content/jcr_root/apps/wknd-events/clientlibs/react-app/js/runtime~main.229c360f.js
 
     write clientlib asset txt file (type: css): ../ui.apps/src/main/content/jcr_root/apps/wknd-events/clientlibs/react-app/css.txt
-    copy: build/static/css/main.c17080f1.css ../ui.apps/src/main/content/jcr_root/apps/wknd-events/clientlibs/react-app/css/main.c17080f1.css
+    copy: build/static/css/main.506bfdb1.chunk.css ../ui.apps/src/main/content/jcr_root/apps/wknd-events/clientlibs/react-app/css/main.506bfdb1.chunk.css
     ```
-6. Beneath `/ui.apps/src/main/content/jcr_root/apps/wknd-events/clientlibs/` should be a new folder named `react-app` and should contain both the `main.<hash>.css` and `main.<hash>.js` files.
+6. Beneath `/ui.apps/src/main/content/jcr_root/apps/wknd-events/clientlibs/` should be a new folder named `react-app` and should contain both the `css` and `js` files generated from the react app.
 
 7. (Optional) Ignore the `react-app` AEM client library in `ui.apps` from source control.
 
@@ -447,17 +435,22 @@ Next, configure the `react-app` project to also be a Maven module. This way it c
     $ mvn -PautoInstallPackage clean install
 
     ...
+    Package imported.
+    Package installed in 53ms.
+    [INFO] ------------------------------------------------------------------------
     [INFO] Reactor Summary:
     [INFO]
-    [INFO] aem-guides-wknd-events ............................. SUCCESS [  0.343 s]
-    [INFO] WKND Events - Core ................................. SUCCESS [  4.794 s]
-    [INFO] WKND Events - React App ............................ SUCCESS [ 17.874 s]
-    [INFO] WKND Events - UI apps .............................. SUCCESS [  3.920 s]
-    [INFO] WKND Events - UI content ........................... SUCCESS [  0.561 s]
-    [INFO] WKND Events - Integration Tests Bundles ............ SUCCESS [  0.745 s]
-    [INFO] WKND Events - Integration Tests Launcher ........... SUCCESS [  2.001 s]
+    [INFO] aem-guides-wknd-events ............................. SUCCESS [  0.291 s]
+    [INFO] WKND Events - Core ................................. SUCCESS [  2.176 s]
+    [INFO] WKND Events - React App ............................ SUCCESS [ 21.766 s]
+    [INFO] WKND Events - UI apps .............................. SUCCESS [  3.548 s]
+    [INFO] WKND Events - UI content ........................... SUCCESS [  0.302 s]
     [INFO] ------------------------------------------------------------------------
     [INFO] BUILD SUCCESS
+    [INFO] ------------------------------------------------------------------------
+    [INFO] Total time: 29.073 s
+    [INFO] Finished at: 2018-10-10T10:35:19-04:00
+    [INFO] Final Memory: 49M/617M
     [INFO] ------------------------------------------------------------------------
     ...
     ```
@@ -470,7 +463,7 @@ Next, configure the `react-app` project to also be a Maven module. This way it c
 
 Next we will integrate the React app on to the page via the client library.
 
-Open up the `ui.apps` project to edit.
+Open up the `aem-guides-wknd-events/ui.apps` project to edit.
 
 1. **Beneath `/apps/wknd-events/components/structure/page` open the file `customheaderlibs.html`.**
 
@@ -548,5 +541,5 @@ Open up the `ui.apps` project to edit.
 
 ## Next: [Chapter 1](../chapter-1/chapter-1.md)
 
-In the next chapter we will configure an AEM page and template to include a client library containing the React app.
+In the next chapter we will install the AEM SPA Editor JS SDK into the React App. We will also implement Text and Image React components that can be edited within AEM.
 
