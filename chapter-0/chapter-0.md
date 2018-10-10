@@ -11,10 +11,10 @@ A local development environment is necessary to complete this tutorial. Screensh
 The following should be installed:
 
 * [Java 1.8](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+* [AEM 6.4 + SP2](https://helpx.adobe.com/experience-manager/6-4/release-notes/sp-release-notes.html)
 * [Apache Maven](https://maven.apache.org/) (3.3.9 or newer)
 * [Node.js v10+](https://nodejs.org/en/)
 * [npm 6+](https://www.npmjs.com/)
-* AEM 6.4 + SP2
 
 Start by double checking that the above tools have been installed and available via the path. Open up a new terminal and run the following commands:
 
