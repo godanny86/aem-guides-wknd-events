@@ -52,7 +52,7 @@ Next, we will install the AEM SPA Editor JS SDK as part of the `react-app` proje
 
     *Note, versions of dependencies may be slightly different depending on when you are starting this tutorial*
 
-    ```
+    ```json
     //package.json
 
     {
@@ -99,7 +99,7 @@ Using the editor of your choice open `react-app` under `aem-guides-wknd-events/r
 
 1. Update the file `index.js` beneath `react-app/src` with the following:
 
-    ```
+    ```javascript
     // src/index.js
 
     import React from 'react';
@@ -121,7 +121,7 @@ Using the editor of your choice open `react-app` under `aem-guides-wknd-events/r
 
 2. Update the file `App.js` beneath `react-app/src` with the following:
 
-    ```
+    ```javascript
     // src/App.js
 
     import React from 'react';
@@ -161,7 +161,7 @@ Using the editor of your choice open `react-app` under `aem-guides-wknd-events/r
 
 4. Create a file named `Page.js` beneath `/react-app/src/components/page`. Populate `Page.js` with the following:
 
-    ```
+    ```javascript
     /*
     Page.js
 
@@ -189,7 +189,7 @@ Using the editor of your choice open `react-app` under `aem-guides-wknd-events/r
 
 5. Create a file named `Page.css` beneath `/react-app/src/components/page`. Populate `Page.css` with the following: 
 
-    ```
+    ```css
     /* Center and max-width the content */
     .WkndPage {
         max-width: 1200px;
@@ -204,7 +204,7 @@ Using the editor of your choice open `react-app` under `aem-guides-wknd-events/r
 
 6. Create a file named `MappedComponents.js` beneath `/react-app/src/components`. Populate `MappedComponents.js` with the following:
 
-    ```
+    ```javascript
     /*
     Dedicated file to include all React components that map to an AEM component
     */
@@ -216,7 +216,7 @@ Using the editor of your choice open `react-app` under `aem-guides-wknd-events/r
 
 7. Update `index.js` beneath `/react-app/src` to include the `MappedComponents.js`:
 
-    ```
+    ```javascript
     // src/index.js
     ...
     import App from './App';
@@ -257,7 +257,7 @@ Using the editor of your choice open `react-app` under `aem-guides-wknd-events/r
 
 2. Create a file named `Text.js` beneath `/react-app/src/components/text`. Populate `Text.js` with the following:
 
-    ```
+    ```javascript
     /*
     Text.js
 
@@ -303,7 +303,7 @@ Using the editor of your choice open `react-app` under `aem-guides-wknd-events/r
 
 3. Update `src/components/MappedComponents.js` to require `Text.js`.
 
-    ```
+    ```javascript
     // src/components/MappedComponents.js
     
     require('./page/Page');
@@ -323,8 +323,8 @@ Using the editor of your choice open `react-app` under `aem-guides-wknd-events/r
 
 6. View http://localhost:4502/content/wknd-events/react/home.model.json in another tab in the browser. Search for `wknd-events/components/content/text` to find the JSON exported by the AEM Text component.
 
-    ```
-    // /content/wknd-events/react/home.model.json
+    ```json
+    //partial contents of /content/wknd-events/react/home.model.json
     ...
 
     "text": {
@@ -364,7 +364,7 @@ Using the editor of your choice open `react-app` under `aem-guides-wknd-events/r
 
 2. Create a file named `Image.js` beneath `/react-app/src/components/image`. Populate `Image.js` with the following:
 
-    ```
+    ```javascript
     import React, {Component} from 'react';
     import {MapTo} from '@adobe/cq-react-editable-components';
 
@@ -405,7 +405,7 @@ Using the editor of your choice open `react-app` under `aem-guides-wknd-events/r
 
 3. Update `src/components/MappedComponents.js` to require `Image.js`.
 
-    ```
+    ```javascript
     // src/components/MappedComponents.js
     
     require('./page/Page');
@@ -426,8 +426,8 @@ Using the editor of your choice open `react-app` under `aem-guides-wknd-events/r
 
 6. View http://localhost:4502/content/wknd-events/react/home.model.json in another tab in the browser. Search for `wknd-events/components/content/image` to find the JSON exported by the AEM Image component.
 
-    ```
-    // /content/wknd-events/react/home.model.json
+    ```json
+    // partial contents /content/wknd-events/react/home.model.json
     ...
 
     "image": {
@@ -460,7 +460,7 @@ In the editor of your choice open the `<src>/aem-guides-wknd-events/core` module
 
 1. **Open `core/src/main/java/com/adobe/aem/guides/wkndevents/core/models/HierarchyPage.java`**
 
-    ```
+    ```java
     package com.adobe.aem.guides.wkndevents.core.models;
 
     import com.adobe.cq.export.json.ContainerExporter;
@@ -486,7 +486,7 @@ In the editor of your choice open the `<src>/aem-guides-wknd-events/core` module
       > Note* currently the HieararchyPageImpl is copied into the project. In the near future a default HieararchyPageImpl will be made available via Core Components. Developers will continue to have the option to extend but will no longer be responsible for maintaining the implementation. Make sure to check back for updates.
 
 
-    ```
+    ```java
     @Model(adaptables = SlingHttpServletRequest.class, adapters = {HierarchyPage.class, ContainerExporter.class}, resourceType = HierarchyPageImpl.RESOURCE_TYPE)
     @Exporter(name = ExporterConstants.SLING_MODEL_EXPORTER_NAME, extensions = ExporterConstants.SLING_MODEL_EXTENSION)
     public class HierarchyPageImpl implements HierarchyPage {
@@ -519,7 +519,7 @@ In the editor of your choice open the `<src>/aem-guides-wknd-events/core` module
 
     Notice that content of the current page is exposed and the content of child page: /content/wknd-events/react/home.
 
-    ```
+    ```json
     // /content/wknd-events/react.model.json 
 
     {
