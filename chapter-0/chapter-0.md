@@ -533,7 +533,7 @@ Open up the `aem-guides-wknd-events/ui.apps` project to edit.
     $ mvn -PautoInstallPackage clean install
     ```
 
-5. **Navigate to http://localhost:4502/editor.html/content/wknd-events/react.html**
+5. **Navigate to http://localhost:4502/editor.html/content/wknd-events/react/home.html**
 
     You should now see the React application being rendered on the AEM page.
 
