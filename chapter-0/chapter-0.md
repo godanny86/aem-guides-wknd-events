@@ -79,9 +79,9 @@ The following properties were used when generating the AEM project from [Archety
     * **core** - Java bundle containing all core functionality like OSGi services, listeners or schedulers, as well as component-related Java code such as servlets or request filters.
     * **ui.apps** - contains the /apps parts of the project, ie JS&CSS clientlibs, components, runmode specific configs as well as Hobbes-tests
     * **ui.content** - contains structural content and configurations (/content, /conf)
-    * **react-app** - a webpack project for the React application to be deployed to AEM as a client library.
+    * **react-app** - a webpack project for the React application. Later in this chapter this will be turned into a Maven module to be deployed to AEM as a client library.
 
-    More details about the inner workings of the project can be found in [Getting Started with AEM Sites Part 1 - Project Setup](https://helpx.adobe.com/experience-manager/kt/sites/using/getting-started-wknd-tutorial-develop/part1.html#project-structure). Later in this chapter a new maven module will be added that will contain the SPA source code.
+    More details about the inner workings of the project can be found in [Getting Started with AEM Sites Part 1 - Project Setup](https://helpx.adobe.com/experience-manager/kt/sites/using/getting-started-wknd-tutorial-develop/part1.html#project-structure). 
 
 2. **Build and deploy the project to a local AEM instance**
 
