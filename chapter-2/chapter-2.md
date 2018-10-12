@@ -2,6 +2,8 @@
 
 This chapter focuses on Front End development outside of AEM. In the previous chapter every time a change was made to the React app we had to endure a lengthy build and deploy process to AEM. In this chapter we will look at two different ways of developing the React app against the development server that comes packaged with the React app. Developers will be able to modify JS and CSS files and see the changes immediately reflected in the browser without having to do a full project build, resulting in rapid development. We will also install several popular front end tools to accelerate the development process.
 
+### In this Chapter
+
 ## Install Sass Support
 
 A React best practice is to keep each component modular and self contained. A general recomendation is to avoid re-using the same CSS class name across components, which make the use of preprocessors not as powerful. This project will use [Sass](https://sass-lang.com/) for a few useful features like variables and mixins. This project will also loosely follow [SUIT CSS naming conventions](https://github.com/suitcss/suit/blob/master/doc/components.md). SUIT is a variation of BEM notation, Block Element Modifier, used to create consistent CSS rules.
@@ -718,68 +720,11 @@ class Text extends Component {
 }
 ```
 
+## Integrate Responsive Grid
 
-
-
-
+## Deploy to AEM
 
 ## Style Guidist
 
 https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/template/README.md#getting-started-with-styleguidist
-
-
-
-## Update to use SASS (move to part 2?)
-
-1. Install SASS
-
-```
-$ npm install node-sass --save
-```
-
-2. 
-
-
-## Header Component
-
-## Global Styles (SASS, Header)
-
-## Responsive Grid
-
-1. Create responsive grid Client library
-2. update `clientlib.config.js` to include responsive grid
-3. update `public/index.html` for dev purposes
-
-## Install Storybook (optional)
-
-## Update Image Component 
-
-1. In AEM add a title to Image -> view nothing happens
-2. View json output to see that title property is available
-3. Return to the react-app -> update Image.js to include caption
-4. Update SCSS
-5. Test outside of AEM
-
-
-Notes:
-
-```
-* Primary goal of this chapter is to create the Article Template
-* Introduction of Layout Container and iterative concepts
-* Integration of Responsive grid styles
-* FED mock JSON → how to? how responsive styles are part of JSON
-* Basic article page
-
-1. Introduction of Layout Container / Responsive grid
-2. Add Root + responsivegrid at Template
-3. Update App.js to extend Container
-4. Include page.js ?
-5. Include SASS preprocessor to Webpack project
-6. include WKND base variables/styles
-7. Implement Title Component
-8. Implement Image Component
-
-```
-
-
 
