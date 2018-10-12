@@ -4,6 +4,8 @@ This chapter focuses on Front End development outside of AEM. In the previous ch
 
 ### In this Chapter
 
+* [Install Sass Support](#install-sass-support)
+
 ## Install Sass Support
 
 A React best practice is to keep each component modular and self contained. A general recomendation is to avoid re-using the same CSS class name across components, which make the use of preprocessors not as powerful. This project will use [Sass](https://sass-lang.com/) for a few useful features like variables and mixins. This project will also loosely follow [SUIT CSS naming conventions](https://github.com/suitcss/suit/blob/master/doc/components.md). SUIT is a variation of BEM notation, Block Element Modifier, used to create consistent CSS rules.
