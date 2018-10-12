@@ -29,10 +29,11 @@ Open a new terminal window.
   ```diff
     /aem-guides-wknd-events
       /react-app
-        /components
-  +     /styles
-  +        _shared.scss
-  +        _variables.scss
+        /src
+          /components
+  +       /styles
+  +          _shared.scss
+  +          _variables.scss
   ```
   These files will include some global variables and mixins we want to re-use across the project.
 
@@ -82,6 +83,8 @@ Open a new terminal window.
 
   //Layout
   $max-width: 1200px;
+  $header-height: 80px;
+  $header-height-big: 100px;
 
   // Spacing
   $gutter-padding: 12px;
@@ -129,6 +132,10 @@ Open a new terminal window.
 
     @mixin component-padding() {
         padding: 0 $gutter-padding !important;
+    }
+
+    @mixin drop-shadow () {
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     }
   ```
 
@@ -263,6 +270,7 @@ h6 {
 
 p {
   color: $color-text;
+  font-family: $font-serif;
 }
 
 ul {
@@ -299,6 +307,7 @@ body {
 img {
     vertical-align: middle;
     border-style: none;
+    width: 100%;
 }
 ```
 
@@ -322,24 +331,397 @@ import App from './App';
 
 ## Mock JSON
 
-3. Update `src/index.js`
+Another approach to rapid development is to use a static or mock JSON file to develop against. This removes the dependency on a local AEM instance. It also allows the Front End developer to update the JSON in order to test functionality and mock new JSON responses without the dependency on a Back End developer.
 
+The initial set up of the mock JSON will require a local AEM instance.
+
+1. In the browser navigate to http://localhost:4502/content/wknd-events/react.model.json
+
+  This is the JSON exported by AEM that is driving the application. Copy the JSON output.
+
+2. Open the React app in the editor of your choice: `<src>/aem-guides-wknd-events/react-app`.
+3. Underneath `react-app` there should be a folder named `public`. Add a new file named `mock.model.json`:
+
+```diff
+/aem-guides-wknd-events
+  /react-app
+    /public
+      favicon.ico
+      index.html
+      manifest.json
++     mock.model.json
+    /src
 ```
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { ModelManager, ModelClient, Constants } from '@adobe/cq-spa-page-model-manager';
-import './index.css';
-import App from './App';
-import "./components/MappedComponents";
 
-function render(model) {
-    ReactDOM.render((
-        <App cqChildren={ model[Constants.CHILDREN_PROP] } cqItems={ model[Constants.ITEMS_PROP] } cqItemsOrder={ model[Constants.ITEMS_ORDER_PROP] }
-            cqPath={ ModelManager.rootPath } locationPathname={ window.location.pathname }/>), document.getElementById('root'));
+4. Paste the copied JSON from the previous step into `mock.model.json`
+
+  ```json
+  {
+    ":items": {},
+    ":itemsOrder": [],
+    ":type": "wknd-events/components/structure/app",
+    ":hierarchyType": "page",
+    ":path": "/content/wknd-events/react",
+    ":children": {
+        "/content/wknd-events/react/home": {
+            ":items": {
+                "root": {
+                    "gridClassNames": "aem-Grid aem-Grid--12 aem-Grid--default--12",
+                    "columnCount": 12,
+                    "columnClassNames": {
+                        "responsivegrid": "aem-GridColumn aem-GridColumn--default--12"
+                    },
+                    ":items": {
+                        "responsivegrid": {
+                            "gridClassNames": "aem-Grid aem-Grid--12 aem-Grid--default--12",
+                            "columnCount": 12,
+                            "columnClassNames": {
+                                "image": "aem-GridColumn aem-GridColumn--default--9 aem-GridColumn--offset--default--0 aem-GridColumn--default--none",
+                                "text": "aem-GridColumn aem-GridColumn--default--12"
+                            },
+                            ":items": {
+                                "text": {
+                                    "text": "<h1>Hello World</h1>\r\n",
+                                    "richText": true,
+                                    ":type": "wknd-events/components/content/text"
+                                },
+                                "image": {
+                                    "alt": "Alternative Text here",
+                                    "title": "This is a caption",
+                                    "src": "/content/wknd-events/react/home/_jcr_content/root/responsivegrid/image.coreimg.jpeg/1539196394835.jpeg",
+                                    "srcUriTemplate": "/content/wknd-events/react/home/_jcr_content/root/responsivegrid/image.coreimg{.width}.jpeg/1539196394835.jpeg",
+                                    "lazyEnabled": false,
+                                    "widths": [],
+                                    ":type": "wknd-events/components/content/image"
+                                }
+                            },
+                            ":itemsOrder": [
+                                "text",
+                                "image"
+                            ],
+                            ":type": "wcm/foundation/components/responsivegrid"
+                        }
+                    },
+                    ":itemsOrder": [
+                        "responsivegrid"
+                    ],
+                    ":type": "wcm/foundation/components/responsivegrid"
+                }
+            },
+            ":itemsOrder": [
+                "root"
+            ],
+            ":type": "wknd-events/components/structure/page",
+            ":hierarchyType": "page",
+            ":path": "/content/wknd-events/react/home",
+            "title": "Home"
+        }
+    },
+    "title": "React App"
 }
-
-ModelManager.initialize({ path: process.env.REACT_APP_PAGE_MODEL_PATH }).then(render);
 ```
+
+5. Add a new folder beneath the `public` folder named `images`. Select an image from your desktop and add it to the `images` folder:
+
+```diff
+/aem-guides-wknd-events
+  /react-app
+    /public
+      favicon.ico
+      index.html
+      manifest.json
+      mock.model.json
++     /images
++        mock-image.jpeg 
+    /src
+```
+
+6. Update the `mock.model.json` to point to the local image source versus the one from AEM Assets. In `mock.model.json` search for `wknd-events/components/content/image`. Update the `src` value
+
+```diff
+
+  "image": {
+          "alt": "Alternative Text here",
+          "title": "This is a caption",
+-         "src": "/content/wknd-events/react/home/_jcr_content/root/responsivegrid/image.coreimg.jpeg/1539196394835.jpeg",
++         "src": "/images/mock-image.jpeg",
+          "srcUriTemplate": "/content/wknd-events/react/home/_jcr_content/root/responsivegrid/image.coreimg{.width}.jpeg/1539196394835.jpeg",
+          "lazyEnabled": false,
+          "widths": [],
+          ":type": "wknd-events/components/content/image"
+      }
+```
+
+7. Update `react-app/.env.development` file to point to the `mock.model.json`. Comment out the proxy `REACT_APP_PAGE_MODEL_PATH` for now.
+
+```diff
+  #Request the JSON from AEM
+  #REACT_APP_PAGE_MODEL_PATH=/content/wknd-events/react.model.json
+
+  # Request the JSON from Mock JSON
++ REACT_APP_PAGE_MODEL_PATH=mock.model.json
+```
+
+8. If it is still running, restart the React development server. Environment variables are only embedded at build time, hence the need to restart if any change is made.
+
+9. Navigate to to http://localhost:3000/content/wknd-events/react/home.html. The mock image should now be shown.
+
+  ![mock image](./images/mock-reload.png)
+
+10. Make some other content changes to `mock.model.json` and see the changes automatically reflected in the browser. 
+
+  ![mock json reload](./images/mock-json-reload.gif)
+
+  The ability to modify the JSON model outside of AEM is quite powerful for Front End developers to be able to work in parallel with Back End developers.
+  
+  For the rest of the chapter feel free to develop locally against either the mock JSON or the proxied JSON.
+
+## Header Component
+
+Next a dedicated React component will be created for the header of the application.
+
+1. Beneath `/react-app/src/components` add a folder named `header`. Beneath `/header` add two files named `Header.js` and `Header.scss`:
+
+```diff
+/react-app
+  /src
+    /components
++      /header
++        Header.js
++        Header.scss
+      /image
+      /page
+```
+
+2. Populate `Header.js` with the following to create a React component for the Header:
+
+```javascript
+// src/components/header/Header.js
+
+import React, {Component} from 'react';
+import './Header.scss';
+
+export default class Header extends Component {
+
+  render() {
+      return (
+      <header className="Header">
+          <div className="Header-wrapper">
+              <h1 className="Header-title">WKND<span className="Header-title--inverse">_</span></h1>
+          </div>
+        </header>
+      );
+  }
+}
+```
+
+3. Populate `Header.scss` with the following to add some styles to the component:
+
+```css
+@import '../../styles/shared';
+
+.Header {
+    background-color: $color-primary;
+    height: $header-height;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 99;
+
+    @include media(tablet,desktop) {
+      height: $header-height-big;
+    }
+
+    &-wrapper {
+        @include content-area();
+        display: flex;
+        justify-content: space-between;
+    }
+
+    &-title {
+        font-family: 'Helvetica';
+        font-size: 20px; 
+        float: left;
+        padding-left: $gutter-padding;
+    
+        @include media(tablet,desktop) {
+          font-size: 24px;
+        }
+    }
+
+    &-title--inverse {
+        color: $color-white;
+    }
+  }
+
+```
+
+4. Update `App.js` at `react-app/src/App.js` to include the Header component:
+
+```diff
+import React from 'react';
+import { Page, withModel, EditorContext, Utils } from '@adobe/cq-react-editable-components';
++ import Header from './components/header/Header';
+
+// This component is the application entry point
+class App extends Page {
+
+    render() {
+        return (
+            <div className="App">
++                <Header />
+                <EditorContext.Provider value={ Utils.isInEditor() }>
+```
+
+5. Update **body** rule in the file `index.scss` at `react-app/src/index.scss` to account for the header height:
+
+```diff
+/* index.scss */
+body {
+    //font-weight: $normal;
+    background-color: $color-white;
+    font-family: $font-sans;
+    margin: 0;
+    padding: 0;
+    font-weight: $font-weight-light;
+    font-size: $em-base;
+    text-align: left;
+    color: $color-black;
+    line-height: 1.5;
+    line-height: 1.6;
+    letter-spacing: 0.3px;
+
++    padding-top: $header-height-big;
++    @include media(mobile, tablet) {
++        padding-top: $header-height;
++    }
+}
+```
+
+6. On the static development server you should now see the changes to the header:
+
+  ![header implementation](./images/header.png)
+
+## Update Image Component
+
+Next we will add the option to display a caption below the Image component if `props.title` is populated:
+
+1. Update `react-app/src/components/image/Image.js` with the following:
+
+```diff
+import React, {Component} from 'react';
+import {MapTo} from '@adobe/cq-react-editable-components';
++ require('./Image.scss');
+
+...
+
+class Image extends Component {
+
++    get caption() {
++        if(this.props.title && this.props.title.length > 0) {
++            return <span className="Image-caption">{this.props.title}</span>;
++        }
++        return null;
++    }
+
+    get content() {
+        return <img src={this.props.src} alt={this.props.alt}
+            title={this.props.displayPopupTitle && this.props.title}/>
+    }
+
+    render() {
+        return (<div className="Image">
+                {this.content}
++               {this.caption}
+            </div>);
+    }
+}
+```
+
+2. Beneath `react-app/src/components/image/` add a new file named `Image.scss`. Populate it with the following:
+
+```css
+@import '../../styles/shared';
+
+.Image {
+  @include component-padding();
+
+  &-image {
+    margin: 2rem 0;
+    width: 100%;
+    border: 0;
+    font: inherit;
+    padding: 0;
+    vertical-align: baseline; 
+  }
+
+  &-caption {
+    color: $color-white;
+    background-color: $color-black;
+    height: 3em;
+    position: relative;
+    padding: 20px 10px;
+    top: -10px;
+    @include drop-shadow();
+
+    @include media(tablet) {
+        padding: 25px 15px;
+        top: -14px;
+    }
+
+    @include media(desktop) {
+        padding: 30px 20px;
+        top: -16px;
+    }
+  }
+}
+```
+
+3. On the static development server you should now see the changes to the Image component:
+
+  ![image caption](./images/image-caption.png)
+
+## Update Text Component
+
+Next we will make some small modifications to the Text component to promote consistency across all of the mapped components.
+
+1. Update the `render()` function in `react-app/src/components/text/Text.js` with the following to add a wrapper div. Also add an import of a `Text.scss` file.
+
+```diff
+  import React, {Component} from 'react';
+  import {MapTo} from '@adobe/cq-react-editable-components';
++ require('./Text.scss');
+
+...
+
+class Text extends Component {
+
+...
+
+    render() {
++        let innercontent = this.props.richText ? this.richTextContent : this.textContent;
++        return (<div className="Text">
++                {innercontent}
++            </div>);
+    }
+}
+...
+```
+
+2. Beneath `react-app/src/components/text/` add a new file named `Text.scss`. Populate it with the following:
+
+```
+@import '../../styles/shared';
+
+.Text {
+  @include component-padding();
+}
+```
+
+
+
+
+
 
 ## Style Guidist
 
