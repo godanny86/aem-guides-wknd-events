@@ -190,7 +190,7 @@ The process illustrated above is as follows
 
 3. Create a new file beneath the `aem-guides-wknd-events/react-app` folder named `clientlib.config.js`. Populate the file with the following:
 
-    ```json
+    ```js
     module.exports = {
         // default working directory (can be changed per 'cwd' in every asset option)
         context: __dirname,
