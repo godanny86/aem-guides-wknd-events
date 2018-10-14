@@ -40,7 +40,7 @@ $ npm --version
 
 To accelerate the tutorial we will start from a predefined project. Download the following ZIP file and unzip locally:
 
-Download: [Starter Project](../aem-guides-wknd-events-START.zip)
+Download: [Starter Project](./aem-guides-wknd-events-START.zip)
 
 You can also fork the [Git Repository](#) and start the tutorial from there:
     
