@@ -835,7 +835,7 @@ module.exports = {
     require: [
         path.join(__dirname, 'src/index.scss')
       ],
-    ignore:  ['src/components/**/Page.js','src/components/**/MappedComponents.js','**/__tests__/**', '**/*.test.{js,jsx,ts,tsx}', '**/*.spec.{js,jsx,ts,tsx}', '**/*.d.ts']
+    ignore:  ['src/components/**/Page.js','src/components/**/MappedComponents.js','src/components/**/Header.js','**/__tests__/**', '**/*.test.{js,jsx,ts,tsx}', '**/*.spec.{js,jsx,ts,tsx}', '**/*.d.ts']
 }
 ```
 
@@ -883,7 +883,10 @@ module.exports = {
 
    ![image style guide](./images/image-styleguide.png)
 
-7. Repeat the steps above for the **Text** and **Header** component in order to provide style guides for the respective components and variations.
+7. Repeat the steps above for the **Text** component. Challenge: add two states for plain text and rich text:
+
+  ![text style guide](./images/text-styleguide.png)
+
 
 ## Next: [Chapter 3](../chapter-3/chapter-3.md)
 
