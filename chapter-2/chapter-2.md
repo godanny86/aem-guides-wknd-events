@@ -724,9 +724,169 @@ class Text extends Component {
 
 ## Integrate Responsive Grid
 
-## Deploy to AEM
+AEM ships with an edit mode called [Layout Mode](https://helpx.adobe.com/experience-manager/6-4/sites/authoring/using/responsive-layout.html), which when enabled allows authors to re-size components and containers to optimize content on different device widths. This feature is baked into the SPA Editing capabilities. The only action needed is to integrate AEM's Responsive Grid CSS into our project.
 
-## Style Guidist
+As part of the starter project a dedicated client library for the Responsive Grid has been included in the `ui.apps` project. You can view the client library at `/aem-guides-wknd-events/ui.apps/src/main/content/jcr_root/apps/wknd-events/clientlibs/responsive-grid`. This client library has a category of `wknd-events.grid` and includes a single file named `grid.less` which includes the necessary CSS for the Layout Mode and the responsive grid to work. Next we will make sure that this CSS is loaded with the React app.
 
-https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/template/README.md#getting-started-with-styleguidist
+1. Beneath `<src>/aem-guides-wknd-events/react-app` open up `clientlib.config.js`. Update `clientlib.config.js` to make the `wknd-events.grid` a dependency of react app:
 
+```diff
+module.exports = {
+    // default working directory (can be changed per 'cwd' in every asset option)
+    context: __dirname,
+
+    // path to the clientlib root folder (output)
+    clientLibRoot: "./../ui.apps/src/main/content/jcr_root/apps/wknd-events/clientlibs",
+
+    libs: {
+        name: "react-app",
+        allowProxy: true,
+        categories: ["wknd-events.react"],
+        serializationFormat: "xml",
+        jsProcessor: ["min:gcc"],
++        dependencies:["wknd-events.grid"],
+        assets: {
+            js: [
+                "build/static/**/*.js"
+            ],
+            css: [
+                "build/static/**/*.css"
+            ]
+        }
+    }
+};
+```
+
+2. Deploy the changes to AEM from the root of the project using maven:
+
+```bash
+$ cd <src>/aem-guides-wknd-events
+$ mvn -PautoInstallPackage clean install
+```
+
+3. Navigate to http://localhost:4502/editor.html/content/wknd-events/react/home.html. You should now be able to use the layout controls on the component to re-size components based on the grid.
+
+![layout control](./images/layout-control.png)
+![layout drag](./images/layout-drag.png)
+
+4. Add a couple of layout containers and resize them so there is a main content region and a sidebar region. You should be able to create an article that looks similar to this:
+
+5. The last step is to ensure development on the static server can continue and include the responsive grid css. Beneath `aem-guides-wknd-events/react-app/public` folder update the `index.html` file to add a call to `responsive-grid.css`:
+
+```diff
+<head>
++ <link rel="stylesheet" href="/etc.clientlibs/wknd-events/clientlibs/responsive-grid.css" type="text/css">
+...
+</head>
+```
+
+6. Beneath `aem-guides-wknd-events/react-app/` update `.env.development` to use the AEM proxy, if you aren't already:
+
+```diff
+  #Request the JSON from AEM
++ REACT_APP_PAGE_MODEL_PATH=/content/wknd-events/react.model.json
+
+  # Request the JSON from Mock JSON
+  #REACT_APP_PAGE_MODEL_PATH=mock.model.json
+```
+
+7. Start the development server:
+
+```
+$ cd <src>/aem-guides-wknd-events/react-app
+$ npm start
+```
+
+Navigate to http://localhost:3000/content/wknd-events/react/home.html. You should see the responsive grid in place and the content that was just authored in AEM.
+
+8. If you want to develop locally without AEM and the proxy you can always copy + paste the responsive grid CSS and place it as a static CSS file in the `public` folder beneath `aem-guides-wknd-events/react-app/public`.
+
+## Integrate Styleguidist (optional)
+
+A popular way to develop SPA components is to develop them in isolation. This allows a developer to track the various states a component can be in. Several tools exist to make this easy like [Styleguidist](https://react-styleguidist.js.org) and [Storybook](https://storybook.js.org). This project will use Styleguidist as it combines a style guide and documentation into a single tool. More information on integrating Styleguidist with React can be found [here](https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/template/README.md#getting-started-with-styleguidist).
+
+1. Install Styleguidist from the command line:
+
+  ```bash
+  $ cd <src>/aem-guides-wknd-events/react-app
+  $ npm install --save react-styleguidist
+  ```
+
+2. Beneath `react-app` update `package.json` to add Styleguidist scripts:
+
+```diff
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build && clientlib --verbose",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
++   "styleguide": "styleguidist server",
++   "styleguide:build": "styleguidist build"
+  }
+```
+
+3. Create a file beneath `react-app` named `styleguide.config.js`. Add the following configuration rules:
+
+```
+const path = require('path')
+module.exports = {
+    components: 'src/components/**/[A-Z]*.js',
+    assetsDir: 'public/images',
+    require: [
+        path.join(__dirname, 'src/index.scss')
+      ],
+    ignore:  ['src/components/**/Page.js','src/components/**/MappedComponents.js','**/__tests__/**', '**/*.test.{js,jsx,ts,tsx}', '**/*.spec.{js,jsx,ts,tsx}', '**/*.d.ts']
+}
+```
+
+4. Update `react-app/src/components/image/Image.js` to export the component:
+
+```diff
+  /**
+  * Image React Component
+  * 
+  */
++ export default class Image extends Component {
+
+ ...
+```
+
+5. Create a new file named `Image.md` beneath `react-app/src/components/image`. Populate `Image.md` with the following:
+
+```md
+  Image:
+
+    ```js
+    <Image  alt="Alternative Text here"
+    src="mock-image.jpeg"/>
+    ```
+
+  Image with a caption:
+
+    ```js
+    <Image  alt="Alternative Text here" title="This is a caption" 
+    src="mock-image.jpeg"/>
+    ```
+```
+
+6. From the command line beneath the `react-app` start the Styleguidist server:
+
+```bash
+ $ cd <src>/aem-guides-wknd-events/react-app
+ $ npm run styleguide
+
+ You can now view your style guide in the browser:
+
+  Local:            http://localhost:6060/
+  On your network:  http://192.168.1.152:6060/
+```
+
+   ![image style guide](./images/image-styleguide.png)
+
+7. Repeat the steps above for the **Text** and **Header** component in order to provide style guides for the respective components and variations.
+
+## Next: [Chapter 3](../chapter-3/chapter-3.md)
+
+In the next chapter we will add navigation support with **react-router**. Ultimately AEM pages will map to different React views, allowing authors to update different areas of the application. 
+
+## Previous: [Chapter 1](../chapter-1/chapter-1.md)
