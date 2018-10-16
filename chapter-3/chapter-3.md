@@ -14,60 +14,80 @@ npm install --save react-router
 npm install --save react-router-dom
 ```
 
-3. Update index.js
+3. Add Utils for RouteHelper new folder `utils`.
+
+```
+import React, {Component} from 'react';
+import {Route} from 'react-router-dom';
+import { withRouter } from 'react-router';
+
+/**
+ * Helper that facilitate the use of the {@link Route} component
+ */
+
+/**
+ * Returns a composite component where a {@link Route} component wraps the provided component
+ *
+ * @param {React.Component} WrappedComponent    - React component to be wrapped
+ * @param {string} [extension=html]             - extension used to identify a route amongst the tree of resource URLs
+ * @returns {CompositeRoute}
+ */
+export const withRoute = (WrappedComponent, extension) => {
+    return class CompositeRoute extends Component {
+        render() {
+            let routePath = this.props.cqPath;
+            if (!routePath) {
+                return <WrappedComponent {...this.props}/>;
+            }
+
+            extension = extension || 'html';
+
+            // Context path + route path + extension
+            return <Route key={ routePath } path={ '(.*)' + routePath + '.' + extension } render={ (routeProps) => {
+                return <WrappedComponent {...this.props} {...routeProps}/>;
+            } } />
+        }
+    }
+};
+
+/**
+ * ScrollToTop component will scroll the window on every navigation.
+ * wrapped in in `withRouter` to have access to router's props.
+ */
+class ScrollToTop extends Component {
+    componentDidUpdate(prevProps) {
+      if (this.props.location !== prevProps.location) {
+        window.scrollTo(0, 0)
+      }
+    }
+    render() {
+      return this.props.children
+    }
+  }
+  export default withRouter(ScrollToTop);
+```
+
+4. Update index.js
 
 ```diff
   import './index.scss';
   import App from './App';
   import "./components/MappedComponents";
 + import {BrowserRouter} from 'react-router-dom';
++ import ScrollToTop from './utils/RouteHelper';
  
   function render(model) {
      ReactDOM.render((
 +        <BrowserRouter>
++            <ScrollToTop>
             <App cqChildren={ model[Constants.CHILDREN_PROP] } cqItems={ model[Constants.ITEMS_PROP] } cqItemsOrder={ model[Constants.ITEMS_ORDER_PROP] }
                 cqPath={ ModelManager.rootPath } locationPathname={ window.location.pathname }/>
++             </ScrollToTop>
 +        </BrowserRouter>), 
         document.getElementById('root'));
   }
  
  ModelManager.initialize({ path: process.env.REACT_APP_PAGE_MODEL_PATH }).then(render);
-```
-
-4. Add Utils for RouteHelper new folder `utils`.
-
-```
- import React, {Component} from 'react';
- import {Route} from 'react-router-dom';
- 
- /**
-  * Helper that facilitate the use of the {@link Route} component
-  */
- 
- /**
-  * Returns a composite component where a {@link Route} component wraps the provided component
-  *
-  * @param {React.Component} WrappedComponent    - React component to be wrapped
-  * @param {string} [extension=html]             - extension used to identify a route amongst the tree of resource URLs
-  * @returns {CompositeRoute}
-  */
- export const withRoute = (WrappedComponent, extension) => {
-     return class CompositeRoute extends Component {
-         render() {
-             let routePath = this.props.cqPath;
-             if (!routePath) {
-                 return <WrappedComponent {...this.props}/>;
-             }
- 
-             extension = extension || 'html';
- 
-             // Context path + route path + extension
-             return <Route key={ routePath } path={ '(.*)' + routePath + '.' + extension } render={ (routeProps) => {
-                 return <WrappedComponent {...this.props} {...routeProps}/>;
-             } } />
-         }
-     }
- };
 ```
 
 5. Update Page.js
