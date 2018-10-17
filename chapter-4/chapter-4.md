@@ -1,10 +1,22 @@
-# Chapter 4 - Custom Components
+# Chapter 4 - Custom Map Component
 
 
+## Define JSON Contract
 
-# Map Component
+```json
+ "map": {
+        "apiKey": "YOUR_API_KEY_HERE",  
+        "zoom": 15,
+        "label": "Map Label",
+        "lat": 35.6895,
+        "lng": 139.6917,
+        ":type": "wknd-events/components/content/map"
+        }
+```
 
-> Front End Persona
+## Create React Component
+
+> Front End Developer
 
 1. Get Google API key: https://developers.google.com/maps/documentation/javascript/get-api-key
 2. Install Google react map component: https://www.npmjs.com/package/google-map-react
@@ -147,7 +159,7 @@ MapTo('wknd-events/components/content/map')(Map, MapEditConfig);
 REACT_APP_PAGE_MODEL_PATH=mock.model.json
 ```
 
-7. Update the Mock JSON to add the expected JSON for the 
+7. Update the Mock JSON to add the expected JSON for the Google map component.
 
 ```diff
  "responsivegrid_399366997": {
@@ -181,4 +193,138 @@ REACT_APP_PAGE_MODEL_PATH=mock.model.json
 }
 ```
 
-7.
+7. 
+
+```
+$ npm start
+```
+
+## Create AEM Component
+
+> AEM Developer
+
+1. Create a new component:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
+    jcr:primaryType="cq:Component"
+    jcr:title="Google Map"
+    componentGroup="WKND Events - Content"/>
+```
+
+2. Create a Dialog
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    jcr:description="Google Map Dialog"
+    jcr:primaryType="nt:unstructured"
+    jcr:title="Google Map"
+    sling:resourceType="cq/gui/components/authoring/dialog">
+    <content
+        jcr:primaryType="nt:unstructured"
+        sling:resourceType="granite/ui/components/coral/foundation/container">
+        <items jcr:primaryType="nt:unstructured">
+            <fixedcolums
+                jcr:primaryType="nt:unstructured"
+                sling:resourceType="granite/ui/components/coral/foundation/fixedcolumns">
+                <items jcr:primaryType="nt:unstructured">
+                    <properties
+                        jcr:primaryType="nt:unstructured"
+                        sling:resourceType="granite/ui/components/coral/foundation/container">
+                        <items jcr:primaryType="nt:unstructured">
+                            <lat
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                fieldDescription="Latitude"
+                                fieldLabel="Latitude"
+                                name="./lat"/>
+                            <latTypeHint
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/hidden"
+                                fieldDescription="Latitude"
+                                fieldLabel="Latitude"
+                                name="./lat@TypeHint"
+                                value="Double"/>
+                            <lng
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                fieldDescription="Longitude"
+                                fieldLabel="Longitude"
+                                name="./lng"/>
+                            <lngTypeHint
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/hidden"
+                                fieldDescription="Latitude"
+                                fieldLabel="Latitude"
+                                name="./lng@TypeHint"
+                                value="Double"/>
+                            <zoom
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/numberfield"
+                                fieldDescription="Amount of zoom for your map"
+                                fieldLabel="Zoom"
+                                max="100"
+                                min="1"
+                                name="./zoom"
+                                step="1"/>
+                            <zoomtypehint
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/hidden"
+                                fieldDescription="Latitude"
+                                fieldLabel="Latitude"
+                                name="./zoom@TypeHint"
+                                value="Double"/>
+                            <label
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                fieldDescription="Optional text label to overlay on the map"
+                                fieldLabel="Label"
+                                name="./label"/>
+                        </items>
+                    </properties>
+                </items>
+            </fixedcolums>
+        </items>
+    </content>
+</jcr:root>
+```
+
+3. Create a Design Dialog
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    jcr:description="Google Map Policy"
+    jcr:primaryType="nt:unstructured"
+    jcr:title="Google Map"
+    sling:resourceType="cq/gui/components/authoring/dialog">
+    <content
+        jcr:primaryType="nt:unstructured"
+        sling:resourceType="granite/ui/components/coral/foundation/container">
+        <items jcr:primaryType="nt:unstructured">
+            <fixedcolums
+                jcr:primaryType="nt:unstructured"
+                sling:resourceType="granite/ui/components/coral/foundation/fixedcolumns">
+                <items jcr:primaryType="nt:unstructured">
+                    <properties
+                        jcr:primaryType="nt:unstructured"
+                        sling:resourceType="granite/ui/components/coral/foundation/container">
+                        <items jcr:primaryType="nt:unstructured">
+                            <apikey
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                fieldDescription="Google Map API Key"
+                                fieldLabel="API Key"
+                                name="./apiKey"/>
+                        </items>
+                    </properties>
+                </items>
+            </fixedcolums>
+        </items>
+    </content>
+</jcr:root>
+```
+
+4. Deploy to AEM

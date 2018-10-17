@@ -67,6 +67,8 @@ class ScrollToTop extends Component {
   export default withRouter(ScrollToTop);
 ```
 
+https://github.com/ReactTraining/react-router/blob/master/packages/react-router-dom/docs/guides/scroll-restoration.md
+
 4. Update index.js
 
 ```diff
