@@ -79,8 +79,7 @@
                         jcr:primaryType="nt:unstructured"
                         sling:resourceType="wknd-events/components/content/text"
                         text="&lt;p>Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed molestie augue sit amet leo consequat posuere. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Proin vel ante a orci tempus eleifend ut et magna. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus luctus urna sed urna ultricies ac tempor dui sagittis. In condimentum facilisis porta. Sed nec diam eu diam mattis viverra. Nulla fringilla, orci ac euismod semper, magna diam porttitor mauris, quis sollicitudin sapien justo in libero. Vestibulum mollis mauris enim.&amp;nbsp;&lt;/p>&#xa;&lt;p>Donec viverra auctor lobortis. Pellentesque eu est a nulla placerat dignissim. Morbi a enim in magna semper bibendum. Etiam scelerisque, nunc ac egestas consequat, odio nibh euismod nulla, eget auctor orci nibh vel nisi. Aliquam erat volutpat. Mauris vel neque sit amet nunc gravida congue sed sit amet purus. Quisque lacus quam, egestas ac tincidunt a, lacinia vel velit.&amp;nbsp;&lt;/p>&#xa;"
-                        textIsRich="true">
-                    </text_279202033>
+                        textIsRich="true"/>
                 </responsivegrid>
                 <responsivegrid_399366997
                     jcr:created="{Date}2018-10-12T13:49:41.338-04:00"
@@ -108,8 +107,7 @@
                         jcr:primaryType="nt:unstructured"
                         sling:resourceType="wknd-events/components/content/text"
                         text="&lt;h4>Sidebar heading&lt;/h4>&#xa;"
-                        textIsRich="true">
-                    </text>
+                        textIsRich="true"/>
                     <text_1183005514
                         jcr:created="{Date}2018-10-12T14:31:40.491-04:00"
                         jcr:createdBy="admin"
@@ -118,9 +116,38 @@
                         jcr:primaryType="nt:unstructured"
                         sling:resourceType="wknd-events/components/content/text"
                         text="&lt;p>Morbi euismod magna ac lorem rutrum elementum.&lt;/p>&#xa;"
-                        textIsRich="true">
-                    </text_1183005514>
+                        textIsRich="true"/>
                 </responsivegrid_399366997>
+                <tabs
+                    jcr:lastModified="{Date}2018-10-26T10:45:20.301-04:00"
+                    jcr:lastModifiedBy="admin"
+                    jcr:primaryType="nt:unstructured"
+                    sling:resourceType="wknd/components/content/tabs"
+                    activeItem="item_1">
+                    <item_1
+                        jcr:primaryType="nt:unstructured"
+                        jcr:title="My tab 1"
+                        sling:resourceType="wcm/foundation/components/responsivegrid">
+                        <image
+                            jcr:lastModified="{Date}2018-10-26T10:43:14.284-04:00"
+                            jcr:lastModifiedBy="admin"
+                            jcr:primaryType="nt:unstructured"
+                            sling:resourceType="wknd-events/components/content/image"
+                            fileReference="/content/dam/wknd-events/lurm-484763-unsplash.jpg"/>
+                    </item_1>
+                    <item_2
+                        jcr:primaryType="nt:unstructured"
+                        jcr:title="My Tab 2"
+                        sling:resourceType="wcm/foundation/components/responsivegrid">
+                        <text
+                            jcr:lastModified="{Date}2018-10-26T10:43:28.974-04:00"
+                            jcr:lastModifiedBy="admin"
+                            jcr:primaryType="nt:unstructured"
+                            sling:resourceType="wknd-events/components/content/text"
+                            text="&lt;p>&lt;b>Tab2 content&lt;/b>&amp;nbsp;is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.&lt;/p>&#xa;"
+                            textIsRich="true"/>
+                    </item_2>
+                </tabs>
             </responsivegrid>
         </root>
     </jcr:content>

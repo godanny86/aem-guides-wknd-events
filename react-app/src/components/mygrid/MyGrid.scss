@@ -1,0 +1,15 @@
+@import '../../styles/shared';
+
+.MyGrid {
+    background: $color-black;
+    padding: $gutter-padding;
+    
+    p {
+        color: $color-white;
+    }
+
+    &-message {
+        color: $color-primary;
+    }
+
+}
