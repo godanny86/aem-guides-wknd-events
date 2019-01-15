@@ -19,7 +19,7 @@ const ImageEditConfig = {
  * Image React Component
  * 
  */
-export default class Image extends Component {
+export class Image extends Component {
 
     get caption() {
         if(this.props.title && this.props.title.length > 0) {

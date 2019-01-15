@@ -26,8 +26,9 @@
                                     "gridClassNames": "aem-Grid aem-Grid--default--8 aem-Grid--tablet--12 aem-Grid--phone--12",
                                     "columnCount": 12,
                                     "columnClassNames": {
-                                        "text": "aem-GridColumn aem-GridColumn--tablet--12 aem-GridColumn--default--8 aem-GridColumn--phone--8",
-                                        "list": "aem-GridColumn aem-GridColumn--tablet--12 aem-GridColumn--default--8 aem-GridColumn--phone--8"
+                                        "text": "aem-GridColumn aem-GridColumn--tablet--12 aem-GridColumn--default--8 aem-GridColumn--phone--12",
+                                        "list": "aem-GridColumn aem-GridColumn--tablet--12 aem-GridColumn--default--8 aem-GridColumn--phone--12",
+                                        "teaser": "aem-GridColumn aem-GridColumn--tablet--12 aem-GridColumn--default--8 aem-GridColumn--phone--12"
                                     },
                                     ":items": {
                                         "text": {
@@ -57,11 +58,30 @@
                                             "showModificationDate": false,
                                             "linkItems": false,
                                             ":type": "wknd-events/components/content/list"
+                                        },
+                                        "teaser": {
+                                            "title": "WKNDs Free Pass",
+                                            "description": "<p>Get a Monthly package handcrafted for you. Secret Shows, Special Discounts, limited access art shows. Discover your city events and venues in a smarter way, relevant to your interests.</p>\r\n",
+                                            "offerText":"$200 / Month",
+                                            "style": "Teaser--dark",
+                                            "actionsEnabled": true,
+                                            "imageLinkHidden": false,
+                                            "titleLinkHidden": false,
+                                            "actions": [
+                                                {
+                                                    "title": "More",
+                                                    "url": "#"
+                                                }
+                                            ],
+                                            "imagePath": "/content/wknd-events/react/home/jcr:content/root/responsivegrid/responsivegrid/teaser",
+                                            "imageSrc": "/images/sponsored-dark-bg.jpg",
+                                            ":type": "wknd-events/components/content/teaser"
                                         }
                                     },
                                     ":itemsOrder": [
                                         "text",
-                                        "list"
+                                        "list",
+                                        "teaser"
                                     ],
                                     ":type": "wcm/foundation/components/responsivegrid"
                                 },
@@ -126,6 +146,7 @@
                             "columnCount": 12,
                             "columnClassNames": {
                                 "text": "aem-GridColumn aem-GridColumn--default--12",
+                                "teaser": "aem-GridColumn aem-GridColumn--default--12",
                                 "responsivegrid": "aem-GridColumn aem-GridColumn--tablet--12 aem-GridColumn--offset--tablet--0 aem-GridColumn--tablet--none aem-GridColumn--default--8 aem-GridColumn--offset--default--0 aem-GridColumn--default--none aem-GridColumn--phone--12 aem-GridColumn--offset--phone--0 aem-GridColumn--phone--none",
                                 "responsivegrid_399366997": "aem-GridColumn aem-GridColumn--tablet--12 aem-GridColumn--offset--tablet--0 aem-GridColumn--tablet--none aem-GridColumn--default--4 aem-GridColumn--offset--default--0 aem-GridColumn--default--none aem-GridColumn--phone--12 aem-GridColumn--offset--phone--0 aem-GridColumn--phone--none"
                             },
@@ -134,6 +155,23 @@
                                     "text": "<h1>First Article</h1>\n",
                                     "richText": true,
                                     ":type": "wknd-events/components/content/text"
+                                },
+                                "teaser": {
+                                    "title": "WKNDs Free Pass",
+                                    "description": "<p>Get a Monthly package handcrafted for you. Secret Shows, Special Discounts, limited access art shows. Discover your city events and venues in a smarter way, relevant to your interests.</p>\r\n",
+                                    "offerText":"$200 / Month",
+                                    "actionsEnabled": true,
+                                    "imageLinkHidden": false,
+                                    "titleLinkHidden": false,
+                                    "actions": [
+                                        {
+                                            "title": "More",
+                                            "url": "#"
+                                        }
+                                    ],
+                                    "imagePath": "/content/wknd-events/react/home/jcr:content/root/responsivegrid/responsivegrid/teaser",
+                                    "imageSrc": "/images/sponsored-light-big.jpg",
+                                    ":type": "wknd-events/components/content/teaser"
                                 },
                                 "responsivegrid": {
                                     "gridClassNames": "aem-Grid aem-Grid--default--8 aem-Grid--tablet--12 aem-Grid--phone--12",
@@ -208,6 +246,7 @@
                             },
                             ":itemsOrder": [
                                 "text",
+                                "teaser",
                                 "responsivegrid",
                                 "responsivegrid_399366997"
                             ],

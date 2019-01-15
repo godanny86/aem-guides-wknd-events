@@ -1,0 +1,35 @@
+@import '../../styles/shared';
+
+.Button {
+    text-align: center;
+    display: inline-block;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-family: "Source Sans Pro", "Helvetica Neue", "Helvetica";
+    text-decoration: none;
+}
+
+.Button.Button--primary {
+    background-color: $color-primary;
+    color: $color-black;
+}
+
+.Button.Button--L {
+    min-width: 140px;
+    box-sizing: border-box;
+    height: 50px;
+    padding: 0 20px;
+    line-height: 50px;
+    font-size: 16px;
+    font-weight: bold;
+    margin-right: 20px;
+}
+
+.Button.Button--M {
+    min-width: 110px;
+    box-sizing: border-box;
+    height: 10px;
+    margin: 0 20px;
+    line-height: 50px;
+    font-size: 13px;
+}

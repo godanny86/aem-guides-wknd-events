@@ -1,0 +1,87 @@
+@import '../../styles/shared';
+
+$teaser-bg-light: #F4F6F5;
+
+.Teaser {
+  background-color: $teaser-bg-light;
+  width: 100%;
+  float: left;
+
+  &-image {
+    float:left;
+    width: 50%;
+
+    .Image {
+      padding: 0 !important;
+    }
+
+    @include media(mobile) {
+      width:100%;
+
+      .Image img{
+        object-fit: contain;
+        object-position: left;
+        max-height: 350px;
+      }
+    }
+  }
+
+  &-sponsor {
+    text-transform: uppercase;
+    border: 2px solid $color-primary;
+    font-size: 10px;
+    font-weight:$font-weight-semi-bold;
+    padding: 90px 5px 5px 5px;
+    margin-top: 25px;
+    float: left;
+
+    @include media(mobile) {
+      padding-top: 5px;
+      margin-top: 12px;
+    }
+
+  }
+
+  &-content {
+    float: left;
+    width: 45%;
+    padding-left: 5%;
+    padding-top: 24px;
+    padding-bottom: 24px;
+
+    @include media(mobile) {
+      width:95%;
+    }
+  }
+
+  &-title {
+    margin-top: 0.25em;
+    margin-bottom: 0.25em;
+    font-size: 1.7em;
+    float: left;
+    width:100%;
+  }
+
+  &-offer {
+    color: $color-gray;
+    font-weight: $font-weight-semi-bold;
+    margin-top: -.75em;
+    float: left;
+    width:100%;
+  }
+
+  &-description {
+    float: left;
+    width: 75%;
+    p {
+      font-family: $font-sans;
+      font-size: 0.75rem;
+      font-weight: $font-weight-normal;
+    }
+  }
+
+  &-actions {
+    float: left;
+    width: 100%;
+  }
+}
