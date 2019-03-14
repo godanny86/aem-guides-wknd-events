@@ -1,0 +1,3 @@
+# ignore generated client libraries from SPA project
+
+wknd-events-react
