@@ -19,7 +19,7 @@ import App from './components/App';
 import { ModelManager, Constants } from '@adobe/cq-spa-page-model-manager';
 import {BrowserRouter} from 'react-router-dom';
 import './ImportComponents';
-import {CustomModelClient} from './components/CustomModelClient'
+//import {CustomModelClient} from './components/CustomModelClient'
 
 function render(pageModel, useHydrate) {
     // Using HashRouter for now as it's easier to deal with hashes in the location + we are serving static content (while BrowserRouter is a better fit for serving dynamic content)
@@ -39,14 +39,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let initialModel = initialState ? initialState.rootModel : undefined;
 
+    /*
     let modelClient;
-    // Set a custom ModelClient with authorization header in test environment
+    Set a custom ModelClient with authorization header in test environment
     if (process.env.NODE_ENV === 'development') {
         const apiHost = process.env.REACT_APP_API_HOST;
         modelClient = new CustomModelClient(apiHost);
-    }
+    }*/
 
-    ModelManager.initialize({model: initialModel, modelClient: modelClient}).then((model) => {
+    ModelManager.initialize({model: initialModel}).then((model) => {
         render(model, !!initialModel);
     });
 });

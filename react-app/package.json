@@ -9,7 +9,6 @@
     "test:debug": "react-scripts --inspect-brk test --coverage --no-cache --runInBand",
     "eject": "react-scripts eject"
   },
-  "proxy": "http://localhost:4502",
   "eslintConfig": {
     "extends": "react-app"
   },
@@ -27,6 +26,7 @@
     "aem-clientlib-generator": "^1.4.1",
     "clone": "^2.1.2",
     "dompurify": "^1.0.9",
+    "http-proxy-middleware": "^0.19.1",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "react-fast-compare": "^2.0.2",
