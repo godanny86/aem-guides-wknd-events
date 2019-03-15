@@ -75,6 +75,11 @@
                             <artifactId>aem-guides-wknd-events.ui.content</artifactId>
                             <filter>true</filter>
                         </subPackage>
+                        <subPackage>
+                            <groupId>com.adobe.cq</groupId>
+                            <artifactId>core.wcm.components.all</artifactId>
+                            <filter>true</filter>
+                        </subPackage>
                     </subPackages>
                 </configuration>
             </plugin>
@@ -165,5 +170,10 @@
             <type>zip</type>
             <scope>provided</scope>
         </dependency>
+          <dependency>
+                <groupId>com.adobe.cq</groupId>
+                <artifactId>core.wcm.components.all</artifactId>
+                <type>zip</type>
+            </dependency>
     </dependencies>
 </project>
